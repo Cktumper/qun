@@ -23,7 +23,7 @@
 
     ws.onmessage = function (evt) {
         const packet = JSON.parse(evt.data)
-        console.log('Login:' + packet.get('session_id'))
+        console.log('Login:' + packet.session_id)
         // ws.close();
     };
 
