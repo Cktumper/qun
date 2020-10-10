@@ -28,7 +28,7 @@ func NewSession() *Session {
 func (p *Session) Create(conn *websocket.Conn) error {
 	//	生成随机数种
 	r := rand.New(rand.NewSource(time.Now().UnixNano()))
-	
+
 	h := md5.New()
 	h.Write([]byte(fmt.Sprintf("%d%d", time.Now().UnixNano(), r.Intn(99999))))
 
@@ -48,4 +48,11 @@ func (p *Session) Create(conn *websocket.Conn) error {
 //	Author(Wind)
 func (p *Session) GetSessionId() string {
 	return p.sessionId
+}
+
+//	获取 Session 中的连接
+//
+//	Author(Wind)
+func (p *Session) GetConnection() *websocket.Conn {
+	return p.conn
 }

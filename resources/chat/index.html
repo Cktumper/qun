@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Demo</title>
+</head>
+<body>
+<div id="app">
+
+</div>
+<script type="text/javascript">
+    var ws = new WebSocket("ws://localhost:8080/chat/login");
+
+    ws.onopen = function (evt) {
+        console.log("Connection open ...");
+
+        ws.send(JSON.stringify({
+            "type_id": 1,
+            "content": "Hello world",
+        }));
+    };
+
+    ws.onmessage = function (evt) {
+        const packet = JSON.parse(evt.data)
+        console.log('Login:' + packet.get('session_id'))
+        // ws.close();
+    };
+
+    ws.onclose = function (evt) {
+        console.log("Connection closed.");
+    };
+</script>
+
+</body>
+</html>

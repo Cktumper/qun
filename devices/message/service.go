@@ -57,13 +57,13 @@ func (p *Service) Receiver(conn Connection) {
 	go func() {
 		for {
 			//	接收消息
-			_, message, err := conn.GetConnection().ReadMessage()
-			if err != nil {
-				continue
+			msgType, message, err := conn.GetConnection().ReadMessage()
+			if msgType < 0 || err != nil {
+				break
 			}
 
 			//	接收消息，处理逻辑
-			fmt.Println(message)
+			fmt.Println(string(message))
 		}
 	}()
 }
@@ -73,7 +73,13 @@ func (p *Service) Receiver(conn Connection) {
 //	Author(Wind)
 func (p *Service) Run() {
 	for {
-		<-p.buff
+		message := <-p.buff
+
+		for _, sess := range message.To {
+			go func() {
+				_ = sess.GetConnection().WriteJSON(message.packet)
+			}()
+		}
 	}
 }
 

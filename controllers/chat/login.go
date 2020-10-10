@@ -69,10 +69,13 @@ func (p *LoginController) Login(c *gin.Context) {
 	//	绑定 Session
 	_ = session.GetService().Set(sess)
 
-	//	发送消息包
+	//	发送成功消息包
 	message.GetService().Send(message.NewMessage(
-		nil,
-		nil,
+		&session.System,
+		[]message.Session{sess},
 		&packet.Connect{SessionId: sess.GetSessionId(), Flag: 1}),
 	)
+
+	//	监听消息接收事件
+	message.GetService().Receiver(sess)
 }

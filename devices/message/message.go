@@ -7,8 +7,8 @@ import "peon.top/qun/app/packet"
 //	Author(Wind)
 type Message struct {
 	//	发送与接收用户
-	From interface{}
-	To   []interface{}
+	From Session
+	To   []Session
 
 	//	消息包
 	packet packet.Packet
@@ -17,7 +17,7 @@ type Message struct {
 //	构建新的消息
 //
 //	Author(Wind)
-func NewMessage(from interface{}, to []interface{}, packet packet.Packet) *Message {
+func NewMessage(from Session, to []Session, packet packet.Packet) *Message {
 	return &Message{
 		From:   from,
 		To:     to,

@@ -12,6 +12,7 @@ type Service struct {
 }
 
 var (
+	System  Session
 	service *Service
 	once    sync.Once
 )
@@ -101,6 +102,11 @@ func (p *Service) GetAll(except *Session) (result []Session) {
 func (p *Service) Start() error {
 	//	构建新的存储器
 	p.sessions = &sync.Map{}
+
+	//	注册系统 Session
+	//	系统会话是单向的，只能发送消息，不能接收消息
+	_ = System.Create(nil)
+	_ = p.Set(&System)
 
 	//	返回成功
 	return nil
