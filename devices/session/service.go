@@ -38,9 +38,9 @@ func NewService() *Service {
 //	设置 Session
 //
 //	Author(Wind)
-func (p *Service) Set(s *Session) error {
+func (p *Service) Set(s Session) error {
 	//	存储 Session
-	p.sessions.Store(s.GetSessionId(), *s)
+	p.sessions.Store(s.GetSessionId(), s)
 
 	//	返回成功
 	return nil
@@ -83,9 +83,9 @@ func (p *Service) GetAll(except *Session) (result []Session) {
 	//	循环整个 Map 整理会话数据
 	p.sessions.Range(func(key, value interface{}) bool {
 		//	排除自己
-		if key.(string) == except.sessionId {
-			return true
-		}
+		//if except != nil && key.(string) == except.sessionId {
+		//	return true
+		//}
 
 		//	追加返回值
 		result = append(result, value.(Session))
@@ -105,8 +105,8 @@ func (p *Service) Start() error {
 
 	//	注册系统 Session
 	//	系统会话是单向的，只能发送消息，不能接收消息
-	_ = System.Create(nil)
-	_ = p.Set(&System)
+	//_ = System.Create(nil)
+	//_ = p.Set(&System)
 
 	//	返回成功
 	return nil

@@ -2,7 +2,6 @@ package http
 
 import (
 	"fmt"
-	"github.com/fvbock/endless"
 	"github.com/gin-gonic/gin"
 	"html/template"
 	"os"
@@ -52,7 +51,8 @@ func (p *Http) loadSystemRouter() {
 
 //	监听 HTTP 服务
 func (p *Http) Listen() error {
-	return endless.ListenAndServe(fmt.Sprintf("%s:%s", config.ReadString("SERVICE_HOST"), config.ReadString("SERVICE_PORT")), p.engine)
+	//return endless.ListenAndServe(fmt.Sprintf("%s:%s", config.ReadString("SERVICE_HOST"), config.ReadString("SERVICE_PORT")), p.engine)
+	return p.engine.Run(fmt.Sprintf("%s:%s", config.ReadString("SERVICE_HOST"), config.ReadString("SERVICE_PORT")))
 }
 
 //	加载当前执行的目录

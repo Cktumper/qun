@@ -4,7 +4,7 @@ import (
 	"peon.top/qun/bootstrap"
 	"peon.top/qun/config"
 	"peon.top/qun/devices/http"
-	"peon.top/qun/devices/message"
+	"peon.top/qun/devices/notify"
 	"peon.top/qun/devices/session"
 )
 
@@ -19,7 +19,7 @@ func main() {
 	//	Load Devices
 	bp.Add(http.NewHTTP()).
 		Add(session.NewService()).
-		Add(message.NewService())
+		Add(notify.NewService(1))
 
 	//	Run and waiting
 	bp.Run().Waiting()

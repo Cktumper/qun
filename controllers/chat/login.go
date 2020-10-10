@@ -5,7 +5,7 @@ import (
 	"github.com/gorilla/websocket"
 	"net/http"
 	"peon.top/qun/app/packet"
-	"peon.top/qun/devices/message"
+	"peon.top/qun/devices/notify"
 	"peon.top/qun/devices/session"
 	"sync"
 )
@@ -24,15 +24,7 @@ var (
 //	Author(Wind)
 func NewLoginController() *LoginController {
 	loginOnceInstance.Do(func() {
-		loginInstance = &LoginController{
-			upgrader: &websocket.Upgrader{
-				ReadBufferSize:  1024,
-				WriteBufferSize: 1024,
-				CheckOrigin: func(r *http.Request) bool {
-					return true
-				},
-			},
-		}
+		loginInstance = &LoginController{}
 	})
 
 	return loginInstance
@@ -50,8 +42,16 @@ func (p *LoginController) Login(c *gin.Context) {
 		return
 	}
 
+	upgrader := &websocket.Upgrader{
+		ReadBufferSize:  1024,
+		WriteBufferSize: 1024,
+		CheckOrigin: func(r *http.Request) bool {
+			return true
+		},
+	}
+
 	//	否则启动 WSS
-	conn, err := p.upgrader.Upgrade(c.Writer, c.Request, c.Writer.Header())
+	conn, err := upgrader.Upgrade(c.Writer, c.Request, c.Writer.Header())
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"code": 0, "msg": "升级权限失败"})
 		c.Abort()
@@ -67,15 +67,18 @@ func (p *LoginController) Login(c *gin.Context) {
 	}
 
 	//	绑定 Session
-	_ = session.GetService().Set(sess)
+	_ = session.GetService().Set(*sess)
 
 	//	监听消息接收事件
-	message.GetService().Receiver(sess)
+	notify.GetService().Receiver(sess)
 
 	//	发送成功消息包
-	message.GetService().Send(message.NewMessage(
-		&session.System,
-		[]message.Session{sess},
-		&packet.Connect{SessionId: sess.GetSessionId(), Flag: 1}),
-	)
+	notify.GetService().Send(&packet.Message{
+		From: sess,
+		To:   session.GetService().GetAll(nil),
+		Packet: &packet.Connect{
+			Base: packet.Base{PacketId: 1, SessionId: sess.GetSessionId()},
+			Flag: 1,
+		},
+	})
 }
