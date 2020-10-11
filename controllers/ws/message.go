@@ -1,7 +1,6 @@
 package ws
 
 import (
-	"fmt"
 	"peon.top/qun/app/packet"
 	"peon.top/qun/devices/session"
 	"sync"
@@ -22,8 +21,6 @@ func NewMessagePacketController() *MessagePacketController {
 }
 
 func (p *MessagePacketController) Chat(service Sender, msg *packet.Packet) error {
-	fmt.Println(msg.Chat.Message)
-
 	self, _ := session.GetService().Find(msg.SessionId)
 
 	service.Send(&packet.Message{

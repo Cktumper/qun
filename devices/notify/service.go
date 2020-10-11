@@ -62,6 +62,10 @@ func (p *Service) Send(msg ws.IMsg) {
 //	Author(Wind)
 func (p *Service) Receiver(conn Connection) {
 	go func() {
+		if err := recover(); err != nil {
+			fmt.Println(err.(error).Error())
+		}
+
 		for {
 			//	接收消息
 			msgType, message, err := conn.GetConnection().ReadMessage()
@@ -85,14 +89,13 @@ func (p *Service) Run() {
 		case message := <-p.buff:
 			ss := message.GetTo().([]session.Session)
 
-			for _, sess := range ss {
-				fmt.Println(sess)
-				func(sess Session) {
-					if sess.GetConnection() == nil {
+			for i := 0; i < len(ss); i++ {
+				go func(i int) {
+					if ss[i].GetConnection() == nil {
 						return
 					}
-					_ = sess.GetConnection().WriteJSON(message.GetPacket())
-				}(&sess)
+					_ = ss[i].GetConnection().WriteJSON(message.GetPacket())
+				}(i)
 			}
 		default:
 
