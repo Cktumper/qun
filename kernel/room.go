@@ -128,8 +128,8 @@ func (p *Room) Send(message []byte) error {
 //	Author(Wind)
 func (p *Room) SearchPosition(session Session) int {
 	//	查找某一个人
-	for row, session := range p.sessions {
-		if session.GetUserInformation().GetUserId() == session.GetUserInformation().GetUserId() {
+	for row, s := range p.sessions {
+		if s.GetUserInformation().GetUserId() == session.GetUserInformation().GetUserId() {
 			return row
 		}
 	}
