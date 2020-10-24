@@ -11,7 +11,7 @@ type Connection interface {
 	//	返回接收的信息 该信息则直接会被发送给客户端
 	//	返回是否回信，bool 为 false 则不回信
 	//	如果出错则会直接关闭消息循环
-	Receiver() ([]byte, bool, error)
+	Receiver() (Packet, bool, error)
 
 	//	关闭连接
 	Close()

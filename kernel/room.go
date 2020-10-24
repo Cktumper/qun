@@ -49,7 +49,7 @@ func (p *Room) Join(session Session) error {
 	go func() {
 		for {
 			//	接收消息
-			message, reply, err := session.GetConnection().Receiver()
+			packet, reply, err := session.GetConnection().Receiver()
 
 			//	如果出错则退出消息循环
 			if err != nil {
@@ -59,8 +59,8 @@ func (p *Room) Join(session Session) error {
 
 			//	判定是否回信，返回 true 则回信
 			if reply {
-				_ = p.Send(message)
-				log.Printf("%s 发送了消息 %s", session.GetUserInformation().GetNickname(), string(message))
+				_ = p.Send(packet)
+				go log.Printf("%s 发送了消息 %s", session.GetUserInformation().GetNickname(), string(packet.Marshal()))
 			}
 		}
 	}()
@@ -112,11 +112,11 @@ func (p *Room) Leave(session Session) error {
 //	向房间里的所有人群发消息
 //
 //	Author(Wind)
-func (p *Room) Send(message []byte) error {
+func (p *Room) Send(packet Packet) error {
 	//	循环遍历会话，并发送消息
 	for _, session := range p.sessions {
 		//	TODO: 此处直接使用 Go程并不好，花时间需要优化它
-		go session.GetConnection().Send(message)
+		go session.GetConnection().Send(packet.Marshal())
 	}
 
 	//	返回成功
