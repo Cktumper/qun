@@ -1,4 +1,4 @@
-package kernel
+package chat
 
 //	协议包接口定义
 //	该协议包可用于自定义协议

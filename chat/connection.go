@@ -1,4 +1,4 @@
-package kernel
+package chat
 
 //	网络连接抽象接口
 //

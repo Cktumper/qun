@@ -1,4 +1,4 @@
-package kernel
+package chat
 
 type User interface {
 	//	获取用户ID

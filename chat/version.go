@@ -1,4 +1,4 @@
-package kernel
+package chat
 
 //	核心版本号
 //

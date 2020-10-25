@@ -1,4 +1,4 @@
-package kernel
+package chat
 
 type Session interface {
 	//	获取网络连接
