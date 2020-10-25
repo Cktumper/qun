@@ -16,10 +16,16 @@ func NewRoute(engine *gin.Engine) *Route {
 	return &Route{engine: engine}
 }
 
+//	加载路由表
+//
+//	Author(Wind)
 func (p *Route) Load() {
 	//	创建一个路由组
 	r := p.engine.Group("wss")
 
 	//	版本号控制器
 	r.GET("version", controllers.NewVersionController().Version)
+
+	//	Websocket 网络连接
+	r.GET("connect", controllers.NewWSController().Upgrade)
 }
