@@ -1,6 +1,7 @@
 package app
 
 import (
+	"encoding/json"
 	"github.com/gorilla/websocket"
 	"peon.top/qun/chat"
 )
@@ -36,13 +37,10 @@ func (p *Connection) Receiver() (chat.Packet, bool, error) {
 
 	//	处理消息包
 	//	构建包结构
-	packet := &Packet{}
-
-	//	构建包解析器
-	parser := &PacketJSON{}
+	packet := Packet{}
 
 	//	解析包
-	if err := parser.Unmarshal(message, &packet); err != nil {
+	if err := json.Unmarshal(message, &packet); err != nil {
 		return nil, false, err
 	}
 
