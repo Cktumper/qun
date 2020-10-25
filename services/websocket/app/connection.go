@@ -9,6 +9,13 @@ type Connection struct {
 	conn *websocket.Conn
 }
 
+//	构建新的连接器
+//
+//	Author(Wind)
+func NewConnection(conn *websocket.Conn) *Connection {
+	return &Connection{conn: conn}
+}
+
 //	发送消息
 //
 //	Author(Wind)
