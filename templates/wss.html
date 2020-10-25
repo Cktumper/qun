@@ -21,7 +21,8 @@
     </div>
 </div>
 <script type="text/javascript">
-    var ws = new WebSocket("ws://localhost:8080/wss/connect?nickname=Wind&room_id=1");
+    var ws = new WebSocket("ws://localhost:8080/wss/connect?nickname={{ .Nickname }}&room_id=1");
+    var nickname = "{{ .Nickname }}"
 
     ws.onopen = function (evt) {
         console.log("Connection open ...");
@@ -31,7 +32,7 @@
         const packet = JSON.parse(evt.data)
 
         let receiver = document.getElementById("txt_receiver").innerHTML
-        receiver += '<li>' + packet.content + '</li>'
+        receiver += '<li>' + '<span>' + packet.from + ': </span>' + packet.content + '</li>'
         document.getElementById("txt_receiver").innerHTML = receiver
     };
 
@@ -45,6 +46,7 @@
 
         ws.send(JSON.stringify({
             content: sendTxt,
+            from: nickname
         }))
 
         document.getElementById("txt_send").value = ""

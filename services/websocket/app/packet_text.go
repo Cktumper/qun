@@ -3,6 +3,7 @@ package app
 import "encoding/json"
 
 type PacketText struct {
+	From    string `json:"from"`
 	Content string `json:"content"`
 }
 

@@ -28,5 +28,5 @@ func NewIndexController() *IndexController {
 //
 //	Author(Wind)
 func (p *IndexController) HTML(c *gin.Context) {
-	c.HTML(http.StatusOK, "wss.html", gin.H{})
+	c.HTML(http.StatusOK, "wss.html", gin.H{"Nickname": c.Query("nickname")})
 }
