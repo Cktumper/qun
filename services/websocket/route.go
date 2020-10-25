@@ -26,6 +26,8 @@ func (p *Route) Load() {
 	//	版本号控制器
 	r.GET("version", controllers.NewVersionController().Version)
 
+	r.GET("index", controllers.NewIndexController().HTML)
+
 	//	Websocket 网络连接
 	r.GET("connect", controllers.NewWSController().Upgrade)
 }

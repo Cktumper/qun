@@ -3,6 +3,11 @@ package websocket
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"html/template"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"strings"
 )
 
 type Service struct {
@@ -36,6 +41,8 @@ func NewService(port int) *Service {
 //
 //	Author(Wind)
 func (p *Service) Start() error {
+	p.engine.LoadHTMLGlob(fmt.Sprintf("%s../templates/*.html", p.getCurrentDirectory()))
+
 	//	加载路由表
 	p.route.Load()
 
@@ -53,4 +60,28 @@ func (p *Service) Start() error {
 //	Author(Wind)
 func (p *Service) End() error {
 	return nil
+}
+
+//	加载当前执行的目录
+func (p *Service) getCurrentDirectory() string {
+	file, err := exec.LookPath(os.Args[0])
+	if err != nil {
+		return ""
+	}
+	path, err := filepath.Abs(file)
+	if err != nil {
+		return ""
+	}
+	i := strings.LastIndex(path, "/")
+	if i < 0 {
+		i = strings.LastIndex(path, "\\")
+	}
+	if i < 0 {
+		return ""
+	}
+	return path[0 : i+1]
+}
+
+func Unescaped(str string) template.HTML {
+	return template.HTML(str)
 }

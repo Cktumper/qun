@@ -50,6 +50,14 @@ func (p *WSController) Upgrade(c *gin.Context) {
 		return
 	}
 
+	//	查找房间号
+	room, err := chat.GetRoomContainer().Get(request.RoomId)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{"code": 0, "msg": err.Error(), "data": nil})
+		c.Abort()
+		return
+	}
+
 	//	构建升级器，并允许跨域连接
 	upgrader := websocket.Upgrader{
 		ReadBufferSize:  1024,
@@ -72,14 +80,6 @@ func (p *WSController) Upgrade(c *gin.Context) {
 		app.NewUser(request.Nickname),
 		app.NewConnection(wsConn),
 	)
-
-	//	查找房间号
-	room, err := chat.GetRoomContainer().Get(request.RoomId)
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"code": 0, "msg": err.Error(), "data": nil})
-		c.Abort()
-		return
-	}
 
 	//	将 Session 加入到 Chat 聊天室服务中
 	if err := room.Join(session); err != nil {
