@@ -1,6 +1,9 @@
 package chat
 
-import "sync"
+import (
+	"fmt"
+	"sync"
+)
 
 type Service struct {
 	container *RoomContainer
@@ -29,6 +32,8 @@ func NewService() *Service {
 func (p *Service) Start() error {
 	//	初始化房间容器对象
 	p.container = GetRoomContainer()
+
+	fmt.Println("消息核心已启动...")
 
 	//	返回成功
 	return nil
