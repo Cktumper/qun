@@ -5,7 +5,7 @@ package chat
 //	Author(Wind)
 type Connection interface {
 	//	发送消息
-	Send(msg []byte) error
+	Send(msg Packet) error
 
 	//	接收连接信息
 	//	返回接收的信息 该信息则直接会被发送给客户端

@@ -102,6 +102,9 @@ func (p *Room) Leave(session Session) error {
 		p.sessions = append(p.sessions[:index-1], p.sessions[index+1:]...)
 	}
 
+	//	减去计数器
+	p.Total--
+
 	//	关闭该 Session 连接
 	session.GetConnection().Close()
 
@@ -116,7 +119,7 @@ func (p *Room) Send(packet Packet) error {
 	//	循环遍历会话，并发送消息
 	for _, session := range p.sessions {
 		//	TODO: 此处直接使用 Go程并不好，花时间需要优化它
-		go session.GetConnection().Send(packet.Marshal())
+		go session.GetConnection().Send(packet)
 	}
 
 	//	返回成功
