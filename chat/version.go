@@ -1,8 +1,12 @@
 package chat
 
+const (
+	CVersionChatCoreG10 = "G10"
+)
+
 //	核心版本号
 //
 //	Author(Wind)
 func Version() string {
-	return "G01-v0.0.1"
+	return CVersionChatCoreG10
 }
