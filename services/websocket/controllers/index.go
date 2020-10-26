@@ -28,5 +28,9 @@ func NewIndexController() *IndexController {
 //
 //	Author(Wind)
 func (p *IndexController) HTML(c *gin.Context) {
-	c.HTML(http.StatusOK, "wss.html", gin.H{"Nickname": c.Query("nickname")})
+	c.HTML(http.StatusOK, "wss.html", gin.H{
+		"Nickname": c.Query("nickname"),
+		"RoomId":   1,
+		"Host":     "ws://localhost:8080/wss/connect",
+	})
 }

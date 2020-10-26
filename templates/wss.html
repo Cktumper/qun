@@ -1,57 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Demo</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="icon" href="/favicon.ico">
+    <title>chat</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
+    <link href="/static/css/app.5c719611.css" rel="preload" as="style">
+    <link href="/static/css/chunk-vendors.7fbeee9b.css" rel="preload" as="style">
+    <link href="/static/js/app.5c239a5c.js" rel="preload" as="script">
+    <link href="/static/js/chunk-vendors.52075465.js" rel="preload" as="script">
+    <link href="/static/css/chunk-vendors.7fbeee9b.css" rel="stylesheet">
+    <link href="/static/css/app.5c719611.css" rel="stylesheet">
 </head>
 <body>
-<div id="app">
-    <div class="read-box">
-        <div>消息</div>
-        <div>
-            <ul id="txt_receiver"></ul>
-        </div>
-    </div>
-
-    <div class="writer-box">
-        <div>内容：</div>
-        <textarea id="txt_send"></textarea>
-        <input id="btn_send" type="button" value="发送">
-    </div>
-</div>
-<script type="text/javascript">
-    var ws = new WebSocket("ws://localhost:8080/wss/connect?nickname={{ .Nickname }}&room_id=1");
-    var nickname = "{{ .Nickname }}"
-
-    ws.onopen = function (evt) {
-        console.log("Connection open ...");
-    };
-
-    ws.onmessage = function (evt) {
-        const packet = JSON.parse(evt.data)
-
-        let receiver = document.getElementById("txt_receiver").innerHTML
-        receiver += '<li>' + '<span>' + packet.from + ': </span>' + packet.content + '</li>'
-        document.getElementById("txt_receiver").innerHTML = receiver
-    };
-
-    ws.onclose = function (evt) {
-        console.log("Connection closed.");
-    };
-
-    //  发送
-    document.getElementById("btn_send").addEventListener('click', function (ev) {
-        const sendTxt = document.getElementById("txt_send").value
-
-        ws.send(JSON.stringify({
-            content: sendTxt,
-            from: nickname
-        }))
-
-        document.getElementById("txt_send").value = ""
-    })
-</script>
-
+<noscript><strong>We're sorry but chat doesn't work properly without JavaScript enabled. Please enable it to
+        continue.</strong></noscript>
+<div id="app"></div>
+<script>window.renderData = {
+        Nickname: {{ .Nickname }},
+        RoomId: {{ .RoomId }},
+        Host: {{ .Host }}
+    }</script>
+<script src="/static/js/chunk-vendors.52075465.js"></script>
+<script src="/static/js/app.238f335b.js"></script>
 </body>
 </html>

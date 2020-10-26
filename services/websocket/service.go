@@ -42,6 +42,7 @@ func NewService(port int) *Service {
 //	Author(Wind)
 func (p *Service) Start() error {
 	p.engine.LoadHTMLGlob(fmt.Sprintf("%s../templates/*.html", p.getCurrentDirectory()))
+	p.engine.Static("static", fmt.Sprintf("%s../templates/", p.getCurrentDirectory()))
 
 	//	加载路由表
 	p.route.Load()
