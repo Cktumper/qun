@@ -53,6 +53,7 @@ func (p *Room) Join(session Session) error {
 
 			//	如果出错则退出消息循环
 			if err != nil {
+				_ = p.Leave(session)
 				log.Printf("%s 关闭了连接", session.GetUserInformation().GetNickname())
 				break
 			}
