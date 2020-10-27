@@ -67,6 +67,9 @@ func (p *RoomContainer) Remove(roomId int) error {
 		session.GetConnection().Close()
 	}
 
+	//	减少房间数量
+	p.total--
+
 	//	返回成功
 	return nil
 }
