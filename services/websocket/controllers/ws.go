@@ -59,7 +59,7 @@ func (p *WSController) Upgrade(c *gin.Context) {
 	}
 
 	//	构建升级器，并允许跨域连接
-	upgrader := websocket.Upgrader{
+	up := websocket.Upgrader{
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
 		CheckOrigin: func(r *http.Request) bool {
@@ -68,7 +68,7 @@ func (p *WSController) Upgrade(c *gin.Context) {
 	}
 
 	//	创建一个连接
-	wsConn, err := upgrader.Upgrade(c.Writer, c.Request, c.Writer.Header())
+	wsConn, err := up.Upgrade(c.Writer, c.Request, c.Writer.Header())
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"code": 0, "msg": "升级连接失败", "data": nil})
 		c.Abort()
