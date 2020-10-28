@@ -30,6 +30,7 @@ func NewIndexController() *IndexController {
 func (p *IndexController) HTML(c *gin.Context) {
 	c.HTML(http.StatusOK, "wss.html", gin.H{
 		"Nickname": c.Query("nickname"),
+		"UserId":   c.Query("user_id"),
 		"RoomId":   1,
 		"Host":     "ws://localhost:8080/wss/connect",
 	})

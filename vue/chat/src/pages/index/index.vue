@@ -1,7 +1,9 @@
 <template>
   <div>
     <v-card elevation="2" class="chat">
-      <v-card-title> 我的第一个QQ群 </v-card-title>
+      <v-card-title>
+        我的第一个QQ群 <v-icon :color="color" x-large>mdi-message-text</v-icon>
+      </v-card-title>
       <v-divider class="mx-4"></v-divider>
 
       <v-card-text>
@@ -45,17 +47,17 @@ export default {
       sendTxt: "",
       wsConn: "",
       window: window,
+      color:"red"
     };
   },
   mounted() {
-
     //   console.log(this.window.renderData);
-      this.init(this.window.renderData);
+    this.init(this.window.renderData);
   },
   methods: {
     init(renderData) {
       this.wsConn = new WebSocket(
-        renderData.Host + "?nickname=" + renderData.Nickname + "&room_id=1"
+        renderData.Host + "?nickname=" + renderData.Nickname + "&room_id=" + renderData.RoomId + "&user_id=" + renderData.UserId
       );
 
       // 监听socket连接
@@ -66,15 +68,18 @@ export default {
       this.wsConn.onmessage = this.getMessage;
     },
     open() {
+      this.color = "green"
       console.log("socket连接成功");
     },
     error() {
+      this.color = "red"
       console.log("连接错误");
     },
     getMessage(msg) {
       this.lists.push(JSON.parse(msg.data));
     },
     close() {
+      this.color = "red"
       console.log("socket已经关闭");
     },
     send() {

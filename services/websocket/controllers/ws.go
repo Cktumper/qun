@@ -77,7 +77,7 @@ func (p *WSController) Upgrade(c *gin.Context) {
 
 	//	构建一个 Session
 	session := app.NewSession(
-		app.NewUser(request.Nickname),
+		app.NewUser(request.UserId, request.Nickname),
 		app.NewConnection(wsConn),
 	)
 

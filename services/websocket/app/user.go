@@ -11,9 +11,9 @@ type User struct {
 //	初始化用户对象
 //
 //	Author(Wind)
-func NewUser(nickname string) *User {
+func NewUser(userId int, nickname string) *User {
 	return &User{
-		UserId:   1,
+		UserId:   userId,
 		Nickname: nickname,
 	}
 }

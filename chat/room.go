@@ -94,12 +94,14 @@ func (p *Room) Leave(session Session) error {
 	//	删除游标下的人
 	//	这里对切片下的用户进行分割
 	//	如果在游标首位则去头，如果在游标末位则去尾，如果在游标中间就掐头去尾
+
 	switch {
 	case index == 0:
 		p.sessions = p.sessions[1:]
-	case index == len(p.sessions):
+	case index == len(p.sessions)-1:
 		p.sessions = p.sessions[:len(p.sessions)-1]
 	default:
+		//	TODO:这个删除算法有问题
 		p.sessions = append(p.sessions[:index-1], p.sessions[index+1:]...)
 	}
 

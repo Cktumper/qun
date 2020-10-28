@@ -3,6 +3,7 @@ package app
 import "github.com/gin-gonic/gin"
 
 type UpgradeRequest struct {
+	UserId   int    `form:"user_id" json:"user_id" binding:"required"`
 	Nickname string `form:"nickname" json:"nickname" binding:"required"`
 	RoomId   int    `form:"room_id" json:"room_id" binding:"required"`
 }
