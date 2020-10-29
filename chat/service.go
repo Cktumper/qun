@@ -34,7 +34,7 @@ func (p *Service) Start() error {
 	p.container = GetRoomContainer()
 
 	//	加载已注册的房间
-	p.container.Insert(NewRoom(1, "Wind 的测试群", 100))
+	p.container.Insert(NewRoom(1, "我的测试群", 100))
 
 	fmt.Println("消息核心已启动...")
 

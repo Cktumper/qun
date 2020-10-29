@@ -37,6 +37,6 @@ func (p *Session) GetConnection() chat.Connection {
 //	用户离开事件
 //
 //	Author(Wind)
-func (p *Session) OnLeafed() {
-	log.Printf("%s 离开了", p.GetUserInformation().GetNickname())
+func (p *Session) OnLeafed(room *chat.Room) {
+	log.Printf("%s 离开了 %s", p.GetUserInformation().GetNickname(), room.Name)
 }

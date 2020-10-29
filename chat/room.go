@@ -54,7 +54,6 @@ func (p *Room) Join(session Session) error {
 			//	如果出错则退出消息循环
 			if err != nil {
 				_ = p.Leave(session)
-				log.Printf("%s 关闭了连接", session.GetUserInformation().GetNickname())
 				break
 			}
 
@@ -110,7 +109,7 @@ func (p *Room) Leave(session Session) error {
 	session.GetConnection().Close()
 
 	//	呼叫离开事件
-	go session.OnLeafed()
+	go session.OnLeafed(p)
 
 	//	返回成功
 	return nil
@@ -143,6 +142,25 @@ func (p *Room) SearchPosition(session Session) int {
 
 	//	如果未找到这个人，则返回 -1
 	return -1
+}
+
+//	获取房间中的在线用户信息
+//
+//	Author(Wind)
+func (p *Room) GetUsersOnline() (result []User) {
+	//	锁住资源，在处理离开与进入时
+	//	该数据不应该被访问，因为 Session 数组正在被修改
+	//	当然这把锁性能太低了，尝试使用 RW 锁
+	p.mu.Lock()
+	defer p.mu.Unlock()
+
+	//	遍历 SESSIONS 获取用户信息
+	for _, session := range p.sessions {
+		result = append(result, session.GetUserInformation())
+	}
+
+	//	返回用户信息列表
+	return result
 }
 
 //	判定当前房间是否满员了
