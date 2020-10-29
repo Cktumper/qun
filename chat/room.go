@@ -109,6 +109,9 @@ func (p *Room) Leave(session Session) error {
 	//	关闭该 Session 连接
 	session.GetConnection().Close()
 
+	//	呼叫离开事件
+	go session.OnLeafed()
+
 	//	返回成功
 	return nil
 }

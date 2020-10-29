@@ -1,6 +1,9 @@
 package app
 
-import "peon.top/qun/chat"
+import (
+	"log"
+	"peon.top/qun/chat"
+)
 
 type Session struct {
 	user       *User
@@ -29,4 +32,11 @@ func (p *Session) GetUserInformation() chat.User {
 //	Author(Wind)
 func (p *Session) GetConnection() chat.Connection {
 	return p.connection
+}
+
+//	用户离开事件
+//
+//	Author(Wind)
+func (p *Session) OnLeafed() {
+	log.Printf("%s 离开了", p.GetUserInformation().GetNickname())
 }

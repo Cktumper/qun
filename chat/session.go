@@ -7,4 +7,8 @@ type Session interface {
 
 	//	获取用户信息
 	GetUserInformation() User
+
+	//	Session 的关闭，表示的离开
+	//	离开事件
+	OnLeafed()
 }
