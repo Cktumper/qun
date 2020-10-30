@@ -7,20 +7,13 @@
       <v-divider class="mx-4"></v-divider>
 
       <v-card-text>
-        <v-card>
-          <v-card-text class="chat-text">
-            <v-alert
-              dark
-              elevation="2"
-              type="success"
-              class="text-box"
-              v-for="(item, k) in lists"
-              :key="k"
-            >
-              {{ item.from }}: {{ item.content }}
-            </v-alert>
-          </v-card-text>
-        </v-card>
+        <div class="chat-text">
+          <ul>
+            <li v-for="(item, k) in lists" :key="k" :class="item.style">
+              {{ item.from }}:{{ item.content }}
+            </li>
+          </ul>
+        </div>
       </v-card-text>
 
       <v-divider class="mx-4"></v-divider>
@@ -47,7 +40,7 @@ export default {
       sendTxt: "",
       wsConn: "",
       window: window,
-      color:"red"
+      color: "red",
     };
   },
   mounted() {
@@ -57,7 +50,13 @@ export default {
   methods: {
     init(renderData) {
       this.wsConn = new WebSocket(
-        renderData.Host + "?nickname=" + renderData.Nickname + "&room_id=" + renderData.RoomId + "&user_id=" + renderData.UserId
+        renderData.Host +
+          "?nickname=" +
+          renderData.Nickname +
+          "&room_id=" +
+          renderData.RoomId +
+          "&user_id=" +
+          renderData.UserId
       );
 
       // 监听socket连接
@@ -68,18 +67,24 @@ export default {
       this.wsConn.onmessage = this.getMessage;
     },
     open() {
-      this.color = "green"
+      this.color = "green";
       console.log("socket连接成功");
     },
     error() {
-      this.color = "red"
+      this.color = "red";
       console.log("连接错误");
     },
     getMessage(msg) {
-      this.lists.push(JSON.parse(msg.data));
+      let response = JSON.parse(msg.data);
+
+      let style = "left";
+      if (response.from != this.window.renderData.Nickname) style = "right";
+
+      response.style = style;
+      this.lists.push(response);
     },
     close() {
-      this.color = "red"
+      this.color = "red";
       console.log("socket已经关闭");
     },
     send() {
@@ -101,6 +106,15 @@ export default {
   min-height: 60rem;
   .chat-text {
     min-height: 45rem;
+    li {
+      list-style: none;
+    }
+    .left {
+      text-align: left;
+    }
+    .right {
+      text-align: right;
+    }
   }
 }
 
