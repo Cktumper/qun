@@ -44,8 +44,8 @@ func NewService(host string, port int) *Service {
 //
 //	Author(Wind)
 func (p *Service) Start() error {
-	p.engine.LoadHTMLGlob(fmt.Sprintf("%s%s", p.getCurrentDirectory(), config.ReadString("TEMPLATE_RESOURCES_DIRECTORY")))
-	p.engine.Static("static", fmt.Sprintf("%s../templates/", p.getCurrentDirectory()))
+	p.engine.LoadHTMLGlob(fmt.Sprintf("%s%s/*.html", p.getCurrentDirectory(), config.ReadString("TEMPLATE_RESOURCES_DIRECTORY")))
+	p.engine.Static("static", fmt.Sprintf("%s%s/", p.getCurrentDirectory(), config.ReadString("TEMPLATE_RESOURCES_DIRECTORY")))
 
 	//	加载路由表
 	p.route.Load()
