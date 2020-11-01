@@ -33,11 +33,11 @@ endef
 
 #	部署模板
 define template
-	scp -P 22 -r ./bin/resources/* root@$(1):/srv/services/qun/public/
+	scp -P 22 -r ./resources/* root@$(1):/srv/services/qun/resources/
 endef
 
 # 激活服务
 define reload
-	ssh -p 22 root@$(1) "systemctl stop roser; mv /srv/services/qun/services_tmp /srv/services/qun/qun; systemctl restart qund"
+	ssh -p 22 root@$(1) "systemctl stop qund; mv /srv/services/qun/services_tmp /srv/services/qun/qun; systemctl restart qund"
 	echo reload...OK
 endef

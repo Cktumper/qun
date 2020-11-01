@@ -1,8 +1,11 @@
 package controllers
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"peon.top/qun/config"
+	"strconv"
 	"sync"
 )
 
@@ -28,10 +31,17 @@ func NewIndexController() *IndexController {
 //
 //	Author(Wind)
 func (p *IndexController) HTML(c *gin.Context) {
+	//	获取用户ID信息
+	userId, _ := strconv.Atoi(c.Query("user_id"))
+
+	//	渲染模板
 	c.HTML(http.StatusOK, "wss.html", gin.H{
 		"Nickname": c.Query("nickname"),
-		"UserId":   c.Query("user_id"),
+		"UserId":   userId,
 		"RoomId":   1,
-		"Host":     "ws://localhost:8080/wss/connect",
+		"Host": fmt.Sprintf("%s%s/wss/connect",
+			config.ReadString("APP_WSS"),
+			config.ReadString("APP_URL"),
+		),
 	})
 }
