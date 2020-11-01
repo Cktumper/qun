@@ -17,17 +17,19 @@ type Service struct {
 	//	私有方法
 	engine *gin.Engine
 	route  *Route
+	host   string
 	port   int
 }
 
 //	构建一个WEB Socket服务
 //
 //	Author(Wind)
-func NewService(port int) *Service {
+func NewService(host string, port int) *Service {
 	//	构建服务对象
 	p := &Service{
 		engine: gin.Default(),
 		port:   port,
+		host:   host,
 	}
 
 	//	加载路由对象
@@ -53,7 +55,7 @@ func (p *Service) Start() error {
 	}
 
 	//	使用 HTTP 监听端口
-	return p.engine.Run(fmt.Sprintf(":%d", p.port))
+	return p.engine.Run(fmt.Sprintf("%s:%d", p.host, p.port))
 }
 
 //	关闭服务

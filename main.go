@@ -13,10 +13,10 @@ var bp = bootstrap.New()
 //	You Know
 func main() {
 	//	Load Env
-	config.NewEnv(".env").Load()
+	_ = config.NewEnv(".env").Load()
 
 	bp.Add(chat.NewService()).
-		Add(websocket.NewService(8080))
+		Add(websocket.NewService(config.ReadString("SERVICE_HOST"), config.ReadInt("SERVICE_PORT")))
 
 	//	Run and waiting
 	bp.Run().Waiting()
